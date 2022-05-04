@@ -1,4 +1,4 @@
-let todos = JSON.parse(localStorage.getItem('todos')) || [];// eslint-disable-line
+let todos = JSON.parse(localStorage.getItem('todos')) || []; // eslint-disable-line
 
 const listGroup = document.querySelector('.todo-list-group');
 const newTask = document.querySelector('.todo-add').querySelector('input');
@@ -17,7 +17,7 @@ const getTodos = () => {
   return listGroup;
 };
 const updateUI = (data) => {
-  todos = data;
+  if (data) todos = data;
   getTodos();
 };
 
@@ -29,7 +29,7 @@ const addTodos = (event) => {
       completed: false,
       index: todos.length + 1,
     };
-    todos = [...todos, newTodo];
+    todos.push(newTodo);
     localStorage.setItem('todos', JSON.stringify(todos));
     getTodos();
   }
@@ -38,21 +38,19 @@ const addTodos = (event) => {
 const editTodos = ({ index, event }) => {
   if (event.target.value === '') return;
   if (event.key === 'Enter') {
-    todos[index].description = event.target.value;
+    todos[index - 1].description = event.target.value;
     localStorage.setItem('todos', JSON.stringify(todos));
   }
 };
 
 const deleteTodos = (targetIndex) => {
-  const filterTodo = todos.filter((item) => +item.index !== +targetIndex);
-  const newTodos = filterTodo.map((item, index) => ({
-    description: item.description,
-    completed: item.completed,
-    index,
-  }));
+  const newTodos = todos.filter((item) => +item.index !== +targetIndex)
+    .map((item, index) => {
+      item.index = index + 1;
+      return item;
+    });
   localStorage.setItem('todos', JSON.stringify(newTodos));
-  todos = newTodos;
-  getTodos();
+  updateUI(newTodos);
 };
 
 export {
