@@ -1,4 +1,4 @@
-# Todo-List
+# TodoList-Review
 
 >Microverse Module 02 Project: This is an educational project to make a TodoList web application, where the users can add new todo, remove todo, edit todo, mark todo as completed, and remove all completed todo.
 
